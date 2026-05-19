@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faculty Login</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+background:linear-gradient(135deg,#0f172a,#111827);
+overflow:hidden;
+color:white;
+}
+
+/* background glow */
+
+body::before{
+content:"";
+position:absolute;
+width:450px;
+height:450px;
+background:#a78bfa;
+filter:blur(180px);
+top:-120px;
+left:-120px;
+opacity:0.4;
+}
+
+body::after{
+content:"";
+position:absolute;
+width:450px;
+height:450px;
+background:#6366f1;
+filter:blur(180px);
+bottom:-120px;
+right:-120px;
+opacity:0.4;
+}
+
+.login-box{
+width:350px;
+text-align:center;
+z-index:2;
+}
+
+h2{
+font-size:32px;
+margin-bottom:25px;
+background:linear-gradient(90deg,#a78bfa,#6366f1);
+-webkit-background-clip:text;
+color:transparent;
+}
+
+input{
+width:100%;
+padding:14px;
+margin:12px 0;
+border:none;
+border-radius:8px;
+background:rgba(255,255,255,0.08);
+color:white;
+font-size:15px;
+outline:none;
+}
+
+input::placeholder{
+color:#cbd5f5;
+}
+
+button{
+width:100%;
+padding:14px;
+margin-top:15px;
+border:none;
+border-radius:8px;
+font-size:16px;
+font-weight:bold;
+background:linear-gradient(90deg,#a78bfa,#6366f1);
+color:white;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.05);
+box-shadow:0 0 20px #a78bfa;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+<h2>Faculty Login</h2>
+
+<input type="text" id="username" placeholder="Username">
+
+<input type="password" id="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+
+</div>
+
+<script>
+
+function login(){
+
+let user=document.getElementById("username").value;
+let pass=document.getElementById("password").value;
+
+if(user==="DRK_FACULTY" && pass==="DRK"){
+window.location.href="faculty.html";
+}else{
+alert("Invalid login");
+}
+
+}
+
+</script>
+
+</body>
+</html>

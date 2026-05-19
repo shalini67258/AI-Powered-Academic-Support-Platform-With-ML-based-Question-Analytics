@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Doubt Resolver</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f172a, #111827);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f8fafc;
+      overflow: hidden;
+    }
+
+    .blob {
+      position: absolute;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, #38bdf8, transparent 60%);
+      filter: blur(120px);
+      opacity: 0.6;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .blob.one { top: -100px; left: -100px; }
+    .blob.two { bottom: -120px; right: -120px; animation-delay: 3s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-40px); }
+    }
+
+    .hero {
+      text-align: center;
+      max-width: 900px;
+      padding: 40px;
+      z-index: 2;
+      animation: fadeUp 1.2s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 700;
+      background: linear-gradient(90deg, #38bdf8, #a78bfa, #38bdf8);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientMove 4s linear infinite;
+      margin-bottom: 16px;
+    }
+
+    @keyframes gradientMove {
+      to { background-position: 200% center; }
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: #cbd5f5;
+      margin-bottom: 50px;
+    }
+
+    .role-container {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .role-card {
+      width: 280px;
+      padding: 28px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      text-decoration: none;
+      color: inherit;
+      transition: 0.35s ease;
+    }
+
+    .role-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 20px 50px rgba(56,189,248,0.25);
+    }
+
+    .role-title {
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+
+    .role-desc {
+      color: #cbd5f5;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="blob one"></div>
+  <div class="blob two"></div>
+
+  <section class="hero">
+    <h1>AI-Powered Academic Support Platform</h1>
+    <p class="subtitle">
+      Empowering students and faculty through AI-driven learning support,
+       intelligent doubt resolution, verified resources, and learning analytics.
+    </p>
+
+    <div class="role-container">
+
+      <!-- STUDENT -->
+      <a href="student-login.html" class="role-card">
+        <div class="role-title">Learning Space</div>
+        <div class="role-desc">Ask doubts • Explore resources</div>
+      </a>
+
+      <!-- FACULTY -->
+      <a href="faculty-login.html" class="role-card">
+        <div class="role-title">Insight Hub</div>
+        <div class="role-desc">Upload resources • View analytics</div>
+      </a>
+
+    </div>
+  </section>
+
+</body>
+</html>

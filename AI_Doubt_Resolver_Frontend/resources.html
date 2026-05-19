@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Explore</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background: linear-gradient(135deg, #0f172a, #111827);
+  color:#e5e7eb;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  text-align:center;
+  padding:40px;
+}
+
+h1{
+  font-size:80px;
+  margin-bottom:20px;
+  background: linear-gradient(to right,#22d3ee,#a78bfa);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.description{
+  font-size:22px;
+  max-width:800px;
+  line-height:1.8;
+  margin-bottom:40px;
+  color:#cbd5e1;
+}
+
+.search-input{
+  width:400px;
+  padding:15px;
+  border-radius:12px;
+  border:none;
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(10px);
+  color:white;
+  font-size:16px;
+  outline:none;
+  margin-bottom:40px;
+  text-align:center;
+}
+
+.pdf-list{
+  width:100%;
+  max-width:900px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.pdf-box{
+  width:100%;
+  background: rgba(255,255,255,0.05);
+  padding:15px 20px;
+  margin-bottom:15px;
+  border-radius:12px;
+  text-align:left;
+  position: relative;
+}
+
+.pdf-box h3{
+  margin-bottom:5px;
+  font-size:20px;
+  color:#38bdf8;
+}
+
+.pdf-box p{
+  margin-bottom:8px;
+  font-size:16px;
+  color:#cbd5e1;
+}
+
+.pdf-box a{
+  color:#22d3ee;
+  text-decoration:none;
+  font-size:16px;
+}
+
+.no-result{
+  margin-top:20px;
+  font-size:18px;
+  color:#f87171;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Explore</h1>
+
+<p class="description">
+Access all available study materials in one place.  
+Search quickly to locate the exact PDF you need.  
+Focused learning beats random browsing.  
+Clarity comes from consistency.
+</p>
+
+<input 
+type="text" 
+id="searchInput" 
+class="search-input"
+placeholder="Search subject or keyword..."
+onkeyup="filterPDFs()"
+/>
+
+<div class="pdf-list" id="pdfList"></div>
+<div id="noResult" class="no-result"></div>
+
+<script>
+// Fetch resources from backend and display
+async function loadResources(){
+  const pdfList = document.getElementById("pdfList");
+  pdfList.innerHTML = "";
+
+  try {
+    const res = await fetch("http://localhost:8080/api/resources");
+
+    if(!res.ok){
+      throw new Error("Server error");
+    }
+
+    const resources = await res.json();
+
+    if(resources.length === 0){
+      pdfList.innerHTML = "<p>No resources uploaded yet.</p>";
+      return;
+    }
+
+    // Loop through resources and create PDF boxes
+    resources.forEach(resource => {
+      const box = document.createElement("div");
+      box.className = "pdf-box";
+      box.style.position = "relative";
+
+      const fileUrl = `http://localhost:8080/api/resources/file/${resource.fileName}`;
+      const isImage = resource.fileName.match(/\.(jpg|jpeg|png|gif)$/i);
+
+box.innerHTML = `
+  <h3>${resource.subject}</h3>
+  <p>${resource.topic}</p>
+
+  ${isImage 
+    ? `<img src="${fileUrl}" style="max-width:200px; margin-top:10px; border-radius:10px;" />`
+    : `<a href="${fileUrl}" target="_blank">${resource.fileName}</a>`
+  }
+
+  <button id="deleteBtn_${resource.id}" 
+          style="position:absolute; top:15px; right:15px; background:none; border:none; color:#f87171; font-size:18px; cursor:pointer;">
+    🗑️
+  </button>
+
+  <div id="confirm_${resource.id}" style="display:none; margin-top:10px;">
+    Are you sure you want to delete? 
+    <button style="color:#f87171; margin-left:5px;" onclick="confirmDelete(${resource.id}, this)">Yes</button>
+    <button style="color:#38bdf8; margin-left:5px;" onclick="cancelDelete(${resource.id})">No</button>
+  </div>
+`;
+
+      pdfList.appendChild(box);
+
+      // Show inline confirmation when trash icon clicked
+      document.getElementById(`deleteBtn_${resource.id}`).addEventListener('click', () => {
+        document.getElementById(`confirm_${resource.id}`).style.display = 'block';
+      });
+    });
+
+  } catch(err){
+    console.error("Error loading resources:", err);
+    pdfList.innerHTML = "<p>Failed to load resources.</p>";
+  }
+}
+
+// Cancel deletion
+function cancelDelete(id){
+  document.getElementById(`confirm_${id}`).style.display = 'none';
+}
+
+// Confirm deletion
+async function confirmDelete(id, btn){
+  try {
+    const res = await fetch(`http://localhost:8080/api/resources/${id}`, {
+      method: 'DELETE'
+    });
+
+    if(res.ok){
+      btn.closest('.pdf-box').remove();
+    } else {
+      console.error('Failed to delete PDF');
+    }
+  } catch(err){
+    console.error('Error deleting PDF:', err);
+  }
+}
+
+// Search/filter functionality
+function filterPDFs(){
+  const input = document.getElementById("searchInput").value.toLowerCase();
+  const boxes = document.getElementById("pdfList").getElementsByClassName("pdf-box");
+  let matchFound = false;
+
+  for(let i=0; i<boxes.length; i++){
+    const text = boxes[i].textContent.toLowerCase();
+    if(text.includes(input)){
+      boxes[i].style.display = "block";
+      matchFound = true;
+    } else {
+      boxes[i].style.display = "none";
+    }
+  }
+
+  document.getElementById("noResult").textContent = matchFound ? "" : "No resources available for this subject.";
+}
+
+document.addEventListener("DOMContentLoaded", loadResources);
+</script>
+
+</body>
+</html>
