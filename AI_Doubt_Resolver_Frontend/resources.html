@@ -127,7 +127,7 @@ async function loadResources(){
   pdfList.innerHTML = "";
 
   try {
-    const res = await fetch("https://ai-powered-academic-support-platform-hkjd.onrender.com/api/resources");
+    const res = await fetch("https://ai-powered-academic-support-platform-fa5v.onrender.com/api/resources");
 
     if(!res.ok){
       throw new Error("Server error");
@@ -146,7 +146,7 @@ async function loadResources(){
       box.className = "pdf-box";
       box.style.position = "relative";
 
-      const fileUrl = `https://ai-powered-academic-support-platform-hkjd.onrender.com/api/resources/file/${resource.fileName}`;
+      const fileUrl = `https://ai-powered-academic-support-platform-fa5v.onrender.com/api/resources/file/${resource.fileName}`;
       const isImage = resource.fileName.match(/\.(jpg|jpeg|png|gif)$/i);
 
 box.innerHTML = `
@@ -192,7 +192,7 @@ function cancelDelete(id){
 // Confirm deletion
 async function confirmDelete(id, btn){
   try {
-    const res = await fetch(`https://ai-powered-academic-support-platform-hkjd.onrender.com/api/resources/${id}`, {
+    const res = await fetch(`https://ai-powered-academic-support-platform-fa5v.onrender.com/api/resources/${id}`, {
       method: 'DELETE'
     });
 
