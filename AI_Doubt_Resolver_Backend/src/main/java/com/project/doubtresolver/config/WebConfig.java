@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
                     "http://localhost:3000",
                     "http://localhost:5500",
                     "http://127.0.0.1:5500",
-                    "https://drkacademicsupport.netlify.app"  // replace with your actual Netlify URL
+                    "https://shalini67258.github.io"  // replace with your actual Netlify URL
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
