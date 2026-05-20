@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Insight Hub | Faculty</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f172a, #111827);
+      color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      padding: 40px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      background: linear-gradient(90deg, #38bdf8, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+
+    .intro {
+      color: #cbd5f5;
+      max-width: 800px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+      font-size: 1rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 28px;
+      transition: 0.3s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 40px rgba(56,189,248,0.3);
+    }
+
+    .card h3 {
+      margin-bottom: 12px;
+      font-size: 1.4rem;
+    }
+
+    .card p {
+      color: #cbd5f5;
+      font-size: 0.96rem;
+      line-height: 1.7;
+    }
+
+    .section {
+      display: none;
+      margin-top: 40px;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .upload-btn {
+      margin-top: 20px;
+      padding: 12px 30px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #38bdf8, #6366f1);
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      color: #0f172a;
+    }
+
+    input[type="file"], input[type="text"] {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 14px;
+      text-align: left;
+    }
+
+    th {
+      background: rgba(255,255,255,0.1);
+    }
+
+    tr:not(:last-child) td {
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .empty-row td {
+      text-align: center;
+      font-style: italic;
+      color: #94a3b8;
+    }
+
+    #uploadMessage {
+      margin-top: 10px;
+      color: #38bdf8;
+      font-weight: 500;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>Insight Hub</h1>
+
+  <p class="intro">
+    Insight Hub is a faculty-focused module designed to support smarter teaching
+    through data-driven insights. Faculty can upload verified learning resources 
+    such as PDFs and notes, track repeated student doubts, and improve teaching 
+    strategies based on real student needs.
+  </p>
+
+  <div class="cards">
+
+    <div class="card" onclick="showSection('upload')">
+      <h3>Upload Learning Resources</h3>
+      <p>
+        Faculty can upload verified academic resources including PDFs, notes, and
+        reference materials. These resources are centrally stored and later
+        recommended to students during doubt resolution, ensuring access to
+        reliable and relevant learning content.
+      </p>
+    </div>
+
+    <div class="card" onclick="showSection('analytics')">
+      <h3>Doubt Analytics</h3>
+      <p>
+        This section tracks repeated doubts raised by students and highlights
+        topics where multiple learners face difficulty. The collected data helps
+        faculty identify weak concepts, revisit those topics in class, and upload
+        focused resources to improve overall learning outcomes.
+      </p>
+    </div>
+
+  </div>
+
+  <div id="upload" class="section">
+    <h3>Upload Learning Resources</h3>
+    <p>
+      Upload verified academic resources by specifying the subject. These resources 
+      will be recommended to students when they raise doubts related to the same subject or topic.
+    </p>
+
+    <div style="margin-top:20px; max-width:400px;">
+      <label>Subject Name</label>
+      <input type="text" id="resSubject" placeholder="Eg: Data Structures">
+
+      <label>Topic (optional)</label>
+      <input type="text" id="resTopic" placeholder="Eg: Trees, Graphs">
+
+      <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+        Choose Resource (PDF/IMAGE)
+      </button>
+
+      <input type="file" id="fileInput">
+
+      <div id="uploadMessage"></div>
+    </div>
+  </div>
+
+  <div id="analytics" class="section">
+    <h3>Doubt Analytics</h3>
+    <p>
+      This table displays subjects and topics where students repeatedly ask doubts. 
+      Faculty can analyze the data to revisit weak topics and upload focused resources.
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Topic</th>
+          <th>No. of Times Asked</th>
+        </tr>
+      </thead>
+      <tbody id="analyticsBody">
+        <tr class="empty-row">
+          <td colspan="3">No analytics data available yet.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <br>
+    <button onclick="clearAnalytics()">Clear Analytics</button>
+  </div>
+
+</div>
+
+<script>
+
+/* =========================
+   SECTION SWITCHING
+========================= */
+function showSection(id){
+  document.querySelectorAll(".section").forEach(sec=>{
+    sec.classList.remove("active");
+  });
+
+  document.getElementById(id).classList.add("active");
+
+  if(id === "analytics"){
+    loadAnalytics();
+  }
+}
+
+/* =========================
+   UPLOAD PDF
+========================= */
+document.getElementById("fileInput").addEventListener("change", async function(){
+
+  const subject = document.getElementById("resSubject").value.trim().toLowerCase();
+  const topic = document.getElementById("resTopic").value.trim().toLowerCase();
+  const file = this.files[0];
+
+  if(!subject || !file){
+    document.getElementById("uploadMessage").innerText =
+      "Enter subject and choose a file (PDF/Image).";
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("subject", subject);
+  formData.append("topic", topic || "");
+  formData.append("file", file);
+
+  try{
+
+    const response = await fetch("https://ai-powered-academic-support-platform-fa5v.onrender.com/api/resources/upload",{
+      method:"POST",
+      body:formData
+    });
+
+    const data = await response.json();
+
+    document.getElementById("uploadMessage").innerText = data.message;
+
+    this.value = "";
+
+  }catch(error){
+
+    console.error("Upload Error:",error);
+
+    document.getElementById("uploadMessage").innerText =
+      "Upload failed. Check backend.";
+
+  }
+
+});
+
+
+/* =========================
+   LOAD ANALYTICS
+========================= */
+
+async function loadAnalytics(){
+
+  const tbody = document.getElementById("analyticsBody");
+  tbody.innerHTML = "";
+
+  try{
+
+    const res = await fetch("http://lhost:8080/api/doubts/analytics");
+
+    if(!res.ok){
+      throw new Error("Failed to fetch analytics");
+    }
+
+    const data = await res.json();
+
+    if(data.length === 0){
+
+      tbody.innerHTML = `
+        <tr class="empty-row">
+          <td colspan="3">No analytics data available yet.</td>
+        </tr>
+      `;
+
+      return;
+    }
+
+    /* Group by subject */
+
+    const grouped = {};
+
+    data.forEach(d => {
+
+      const subject = d.subject;
+
+      if(!grouped[subject]){
+        grouped[subject] = [];
+      }
+
+      grouped[subject].push(d);
+
+    });
+
+
+    /* Render subject wise */
+
+    Object.keys(grouped).forEach(subject => {
+
+      const header = document.createElement("tr");
+
+      header.innerHTML = `
+        <td colspan="3"
+        style="font-weight:bold;font-size:18px;
+        background: rgba(56,189,248,0.1);
+        padding:12px">
+        ${subject.toUpperCase()} SUBJECT DOUBTS
+        </td>
+      `;
+
+      tbody.appendChild(header);
+
+
+      /* Sort by totalQuestions */
+
+      grouped[subject]
+        .sort((a,b)=>b.totalQuestions - a.totalQuestions)
+        .forEach(d => {
+
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+            <td>${d.subject}</td>
+            <td>${d.topic}</td>
+            <td>${d.totalQuestions}</td>
+          `;
+
+          tbody.appendChild(row);
+
+        });
+
+    });
+
+  }catch(err){
+
+    console.error("Analytics Error:",err);
+
+    tbody.innerHTML = `
+      <tr class="empty-row">
+        <td colspan="3">Error loading analytics</td>
+      </tr>
+    `;
+
+  }
+
+}
+
+
+/* =========================
+   CLEAR ANALYTICS
+========================= */
+
+function clearAnalytics(){
+
+  if(!confirm("Are you sure you want to clear all analytics?")){
+    return;
+  }
+
+  fetch("http://lhost:8080/api/analytics/clear",{
+    method:"DELETE"
+  })
+  .then(res => res.text())
+  .then(data => {
+
+    alert(data);
+
+    tion.reload();
+
+  })
+  .catch(error => {
+
+    console.error(error);
+
+    alert("Failed to clear analytics");
+
+  });
+
+}
+
+</script>
